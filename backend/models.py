@@ -12,8 +12,8 @@ class Subject(Base):
     color = Column(String, default="#3B82F6")
     target_hours_per_week = Column(Integer, default=0)
 
-    sessions = relationship("Session", back_populates="subject")
-    deadlines = relationship("Deadline", back_populates="subject")
+    sessions = relationship("Session", back_populates="subject", cascade="all, delete-orphan")
+    deadlines = relationship("Deadline", back_populates="subject", cascade="all, delete-orphan")
 
 class Session(Base):
     __tablename__ = "sessions"

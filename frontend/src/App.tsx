@@ -1,17 +1,69 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SubjectList from './components/SubjectList'
 import SubjectForm from './components/SubjectForm'
+import SessionPanel from './components/SessionPanel'
+import DeadlinePanel from './components/DeadlinePanel'
+import Overview from './components/Overview'
+import { fetchSubjects } from './api/client'
+import type { Subject } from './types'
+
+const TABS = [
+  { id: 'subjects', label: 'Предметы' },
+  { id: 'sessions', label: 'Сессии' },
+  { id: 'deadlines', label: 'Дедлайны' },
+] as const
+
+type TabId = (typeof TABS)[number]['id']
 
 function App() {
   const [refreshKey, setRefreshKey] = useState(0)
+  const [subjects, setSubjects] = useState<Subject[]>([])
+  const [tab, setTab] = useState<TabId>('subjects')
+  const refresh = () => setRefreshKey((k) => k + 1)
+
+  useEffect(() => {
+    fetchSubjects().then(setSubjects).catch(console.error)
+  }, [refreshKey])
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white p-8">
-      <h1 className="text-3xl font-bold text-blue-400 mb-6">Study Tracker</h1>
-      <SubjectForm onSubjectCreated={() => setRefreshKey((k) => k + 1)} />
-      <SubjectList key={refreshKey} />
+    <div className="mx-auto min-h-screen max-w-3xl space-y-6 px-4 py-10">
+      <header>
+        <h1 className="text-3xl font-bold tracking-tight">
+          Study <span className="text-blue-400">Tracker</span>
+        </h1>
+        <p className="mt-1 text-sm text-slate-400">Учёба, сессии и дедлайны в одном месте</p>
+      </header>
+
+      <Overview subjects={subjects} refreshKey={refreshKey} />
+
+      <nav className="flex gap-1 rounded-xl border border-slate-800 bg-slate-900/70 p-1">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`flex-1 cursor-pointer rounded-lg py-2 text-sm font-medium transition ${
+              tab === t.id ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-slate-100'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </nav>
+
+      <main className="card">
+        {tab === 'subjects' && (
+          <>
+            <SubjectForm onSubjectCreated={refresh} />
+            <SubjectList refreshKey={refreshKey} onChanged={refresh} />
+          </>
+        )}
+        {tab === 'sessions' && (
+          <SessionPanel subjects={subjects} refreshKey={refreshKey} onChanged={refresh} />
+        )}
+        {tab === 'deadlines' && <DeadlinePanel subjects={subjects} refreshKey={refreshKey} />}
+      </main>
     </div>
   )
 }
-// sd
+
 export default App
