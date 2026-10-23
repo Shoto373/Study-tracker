@@ -1,11 +1,11 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 from datetime import date
 
 
 class SubjectBase(BaseModel):
-    name: str
-    color: str = "#3B82F6"
-    target_hours_per_week: int = 0
+    name: str = Field(min_length=1, max_length=100)
+    color: str = Field(default="#3B82F6", pattern=r"^#[0-9a-fA-F]{6}$")
+    target_hours_per_week: int = Field(default=0, ge=0, le=168)
 
 
 class SubjectCreate(SubjectBase):
@@ -15,14 +15,13 @@ class SubjectCreate(SubjectBase):
 class SubjectOut(SubjectBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class SessionBase(BaseModel):
     subject_id: int
     date: date
-    duration_minutes: int
+    duration_minutes: int = Field(gt=0, le=1440)
     session_type: str = "self_study"
     note: str | None = None
 
@@ -34,13 +33,12 @@ class SessionCreate(SessionBase):
 class SessionOut(SessionBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class DeadlineBase(BaseModel):
     subject_id: int
-    title: str
+    title: str = Field(min_length=1, max_length=200)
     due_date: date
     is_done: bool = False
 
@@ -52,5 +50,4 @@ class DeadlineCreate(DeadlineBase):
 class DeadlineOut(DeadlineBase):
     id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)

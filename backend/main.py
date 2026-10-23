@@ -9,7 +9,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -34,6 +34,7 @@ def list_subjects(db: DbSession = Depends(database.get_db)):
 
 @app.post("/sessions/", response_model=schemas.SessionOut)
 def create_session(session: schemas.SessionCreate, db: DbSession = Depends(database.get_db)):
+    _require_subject(db, session.subject_id)
     db_session = models.Session(**session.model_dump())
     db.add(db_session)
     db.commit()
@@ -48,6 +49,7 @@ def list_sessions(db: DbSession = Depends(database.get_db)):
 
 @app.post("/deadlines/", response_model=schemas.DeadlineOut)
 def create_deadline(deadline: schemas.DeadlineCreate, db: DbSession = Depends(database.get_db)):
+    _require_subject(db, deadline.subject_id)
     db_deadline = models.Deadline(**deadline.model_dump())
     db.add(db_deadline)
     db.commit()
@@ -65,6 +67,12 @@ def _get_or_404(db: DbSession, model, item_id: int):
     if item is None:
         raise HTTPException(status_code=404, detail=f"{model.__name__} not found")
     return item
+
+
+def _require_subject(db: DbSession, subject_id: int):
+    # SQLite does not enforce foreign keys, so check the subject exists explicitly.
+    if db.get(models.Subject, subject_id) is None:
+        raise HTTPException(status_code=404, detail="Subject not found")
 
 
 def _update(db: DbSession, model, item_id: int, data):
@@ -93,6 +101,7 @@ def delete_subject(item_id: int, db: DbSession = Depends(database.get_db)):
 
 @app.put("/sessions/{item_id}", response_model=schemas.SessionOut)
 def update_session(item_id: int, session: schemas.SessionCreate, db: DbSession = Depends(database.get_db)):
+    _require_subject(db, session.subject_id)
     return _update(db, models.Session, item_id, session)
 
 
@@ -103,6 +112,7 @@ def delete_session(item_id: int, db: DbSession = Depends(database.get_db)):
 
 @app.put("/deadlines/{item_id}", response_model=schemas.DeadlineOut)
 def update_deadline(item_id: int, deadline: schemas.DeadlineCreate, db: DbSession = Depends(database.get_db)):
+    _require_subject(db, deadline.subject_id)
     return _update(db, models.Deadline, item_id, deadline)
 
 
