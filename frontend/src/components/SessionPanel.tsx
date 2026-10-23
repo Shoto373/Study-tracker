@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { fetchSessions, createSession, updateSession, deleteSession } from '../api/client'
 import type { Session, Subject } from '../types'
+import Dropdown from './Dropdown'
+import DatePicker from './DatePicker'
 
 interface Props {
   subjects: Subject[]
@@ -112,16 +114,14 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
   return (
     <section>
       <form onSubmit={handleSubmit} className="mb-5 flex flex-wrap items-center gap-2">
-        <select
-          value={selected ?? ''}
-          onChange={(e) => setSubjectId(Number(e.target.value))}
-          className="field"
-        >
-          {subjects.map((s) => (
-            <option key={s.id} value={s.id}>{s.name}</option>
-          ))}
-        </select>
-        <input type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="field" />
+        <Dropdown
+          options={subjects}
+          value={selected ?? 0}
+          onChange={setSubjectId}
+          placeholder="Предмет"
+          className="w-full"
+        />
+        <DatePicker value={date} onChange={setDate} />
         <input
           type="number"
           min="1"
@@ -137,7 +137,7 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
           placeholder="Заметка"
           className="field min-w-32 flex-1"
         />
-        <button type="submit" className="btn">Добавить</button>
+        <button type="submit" disabled={!date} className="btn">Добавить</button>
       </form>
       {error && <p className="mb-2 text-sm text-red-400">Ошибка: {error}</p>}
       {sorted.length === 0 ? (
@@ -149,16 +149,14 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
             if (editingId === s.id) {
               return (
                 <li key={s.id} className="row flex-wrap" onKeyDown={(e) => handleKeyDown(e, s)}>
-                  <select
+                  <Dropdown
+                    options={subjects}
                     value={editSubject}
-                    onChange={(e) => setEditSubject(Number(e.target.value))}
-                    className="field"
-                  >
-                    {subjects.map((x) => (
-                      <option key={x.id} value={x.id}>{x.name}</option>
-                    ))}
-                  </select>
-                  <input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} required className="field" />
+                    onChange={setEditSubject}
+                    placeholder="Предмет"
+                    className="w-full"
+                  />
+                  <DatePicker value={editDate} onChange={setEditDate} />
                   <input
                     type="number"
                     min="1"

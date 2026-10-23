@@ -138,17 +138,33 @@ function Timer({ subjects, onSaved }: Props) {
       </div>
 
       {!state ? (
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <select
-            value={selected ?? ''}
-            onChange={(e) => setSubjectId(Number(e.target.value))}
-            className="field"
-          >
-            {subjects.map((s) => (
-              <option key={s.id} value={s.id}>{s.name}</option>
-            ))}
-          </select>
-          <button onClick={handleStart} className="btn">Старт</button>
+        <div className="space-y-4">
+          <p className="text-center text-sm text-slate-400">Выберите предмет и нажмите «Старт»</p>
+          <div className="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="Предмет">
+            {subjects.map((s) => {
+              const active = s.id === selected
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={active}
+                  onClick={() => setSubjectId(s.id)}
+                  className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-left text-sm transition ${
+                    active
+                      ? 'border-blue-500 bg-blue-500/10 text-white'
+                      : 'border-slate-800 bg-slate-800/40 text-slate-300 hover:border-slate-700 hover:bg-slate-800/70'
+                  }`}
+                >
+                  <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: s.color }} />
+                  <span className="min-w-0">{s.name}</span>
+                </button>
+              )
+            })}
+          </div>
+          <div className="flex justify-center">
+            <button onClick={handleStart} className="btn h-12 px-10 text-base">Старт</button>
+          </div>
         </div>
       ) : (
         <div className="space-y-3">

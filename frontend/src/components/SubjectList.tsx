@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
-import { fetchSubjects, updateSubject, deleteSubject } from '../api/client'
+import { fetchSubjects, updateSubject, deleteSubject, deleteAllSubjects } from '../api/client'
 import type { Subject } from '../types'
+import ConfirmDialog from './ConfirmDialog'
 
 interface SubjectListProps {
   refreshKey: number
   onChanged: () => void
+  onCleared: () => void
 }
 
-function SubjectList({ refreshKey, onChanged }: SubjectListProps) {
+function SubjectList({ refreshKey, onChanged, onCleared }: SubjectListProps) {
   const [subjects, setSubjects] = useState<Subject[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -16,6 +18,8 @@ function SubjectList({ refreshKey, onChanged }: SubjectListProps) {
   const [color, setColor] = useState('#3b82f6')
   const [target, setTarget] = useState(0)
   const [editError, setEditError] = useState<string | null>(null)
+  const [confirmingClear, setConfirmingClear] = useState(false)
+  const [clearing, setClearing] = useState(false)
 
   useEffect(() => {
     fetchSubjects()
@@ -71,11 +75,34 @@ function SubjectList({ refreshKey, onChanged }: SubjectListProps) {
     }
   }
 
+  async function handleClearAll() {
+    setClearing(true)
+    try {
+      await deleteAllSubjects()
+      setConfirmingClear(false)
+      onCleared()
+    } catch (err) {
+      setConfirmingClear(false)
+      setError((err as Error).message)
+    } finally {
+      setClearing(false)
+    }
+  }
+
   if (loading) return <p className="empty">Загрузка...</p>
   if (error) return <p className="text-sm text-red-400">Ошибка: {error}</p>
   if (subjects.length === 0) return <p className="empty">Предметов пока нет</p>
 
   return (
+    <>
+    <div className="mb-3 flex justify-end">
+      <button
+        onClick={() => setConfirmingClear(true)}
+        className="text-sm text-slate-500 transition hover:text-red-400"
+      >
+        Удалить все предметы
+      </button>
+    </div>
     <ul className="space-y-2">
       {subjects.map((subject) =>
         editingId === subject.id ? (
@@ -131,6 +158,19 @@ function SubjectList({ refreshKey, onChanged }: SubjectListProps) {
         ),
       )}
     </ul>
+    {confirmingClear && (
+      <ConfirmDialog
+        title="Удалить все предметы?"
+        confirmLabel="Удалить всё"
+        busy={clearing}
+        onConfirm={handleClearAll}
+        onCancel={() => setConfirmingClear(false)}
+      >
+        Будут безвозвратно удалены все предметы ({subjects.length}) вместе с занятиями и дедлайнами. Выбранная группа
+        тоже сбросится.
+      </ConfirmDialog>
+    )}
+    </>
   )
 }
 

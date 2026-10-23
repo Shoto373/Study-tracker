@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta http-equiv="Content-Security-Policy" content="
+			default-src 'self';
+			style-src 'self' 'unsafe-inline';
+			img-src 'self' data: w3.org/svg/2000 https://mc.yandex.ru;
+			script-src 'self' https: 'unsafe-inline' https://mc.yandex.ru;
+			frame-src https://mc.yandex.md;
+			connect-src 'self' https://mc.yandex.ru https://mc.yandex.md;
+		">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+				<link rel="shortcut icon" href="/img/favicon.png">
+		<link rel="stylesheet" href="/material-design-icons/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="/css/font/open-sans.css">
+		<link rel="stylesheet" href="/css/main.css?v=14">
+				<title>Расписание занятий РГРТУ - Группы</title>
+						<style>
+			.sub-menu {
+				background-color: white;
+			}
+			.head-warning {
+				display: inline-block;
+				margin-left: 30px;
+				max-width: 600px;
+				vertical-align: top;
+				color: #ca7435;
+				background-color: #fff8de;
+				border-radius: 8px;
+				padding: 5px 10px;
+				box-sizing: border-box;
+				margin-bottom: -30px;
+				margin-top: 10px;
+			}
+		</style>
+		<!-- Yandex.Metrika counter -->
+		<script type="text/javascript">
+			(function(m,e,t,r,i,k,a){
+				m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+				m[i].l=1*new Date();
+				for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+				k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+			})(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=105746275', 'ym');
+
+			ym(105746275, 'init', {ssr:true, clickmap:true, ecommerce:"dataLayer", accurateTrackBounce:true, trackLinks:true});
+		</script>
+		<noscript><div><img src="https://mc.yandex.ru/watch/105746275" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+		<!-- /Yandex.Metrika counter -->
+	</head>
+	<body>
+		<div class="page-wrap">
+			<div class="main-cont">
+				<main >
+										<div class="container" style="padding-bottom: 0; padding-top: 5px; background-color: white;">
+						<div style="vertical-align: middle; display: inline-block; height: 40px;padding: 10px 0;margin: 0 10px 0 -5px;">
+							<svg xmlns="http://www.w3.org/2000/svg" height="40" width="40" viewBox="0 0 240 252"><path style="fill:url(#grad0);stroke:none;" d="M126,96C138,96,144,108,144,126C144,144,138,156,126,156C114,156,78,150,72,144C66,138,66,114,72,108C78,102,114,96,126,96Z"></path><path style="fill:url(#grad1);stroke:none;" d="M18,6C6,6,3,6,6,18C9,30,42,66,60,66L120,66C132,66,143,67,156,69C168,70,180,72,193,77C206,83,234,102,234,119C234,30,208,6,120,6Z"></path><path style="fill:url(#grad2);stroke:none;" d="M234,119C234,102,206,83,193,77C180,72,167,70,156,69C144,67,132,66,120,66C156,66,174,78,174,126C174,174,156,186,120,186L18,186C6,186,3,186,6,198C9,210,42,246,60,246L120,246C210,246,234,222,234,126L234,119Z"></path><defs><radialGradient id="grad0" gradientUnits="userSpaceOnUse" cx="132" cy="96" r="90"><stop offset="0" style="stop-color:#ff85a7;"></stop><stop offset="100%" style="stop-color:#ff16e6;"></stop></radialGradient><linearGradient id="grad1" gradientUnits="userSpaceOnUse" x1="1301" y1="1073" x2="1073" y2="1313"><stop offset="0" style="stop-color:#cff1ff;"></stop><stop offset="100%" style="stop-color:#309cf9;"></stop></linearGradient><linearGradient id="grad2" gradientUnits="userSpaceOnUse" x1="198" y1="150" x2="234" y2="66"><stop offset="0" style="stop-color:#79c1ff;"></stop><stop offset="100%" style="stop-color:#3f8aca;"></stop></linearGradient></defs></svg>
+						</div>
+						<h1 style="vertical-align: middle; display: inline-block; margin: 0">Расписание занятий РГРТУ</h1>					</div>
+									<nav class="sub-menu">
+	<div class="container" style="padding-bottom: 0">
+				<ul><li><a href="/schedule-frame/group" class="active">
+						Группы
+											</a></li><li><a href="/schedule-frame/lecturer" >
+						Преподаватели
+											</a></li><li><a href="/schedule-frame/classroom" >
+						Аудитории
+											</a></li></ul>			</div>
+	</nav>
+		<div class="container">
+					<section class="section">
+									<form method="get" action="/schedule-frame/group" id="schedule-form" >
+					<div class="table-toolbar row space-2" style="padding-bottom: 10px">
+													<div class="column width-3">
+								<div class="field " ><label><span class="label">Факультет</span><div class="select-wrap"><select name="faculty" onchange="this.form.group.value=''; this.form.submit();" ><option value="0"  >-- Не выбран --</option><option value="1"  >ФРТ</option><option value="2"  >ФЭ</option><option value="3"  >ФАИТУ</option><option value="4" selected >ФВТ</option><option value="5"  >ИЭФ</option><option value="10"  >ОА</option><option value="11"  >ИДО</option></select><div class="custom-select"></div></div></label></div>
+							</div>
+							<div class="column width-3">
+								<div class="field " ><label><span class="label">Номер группы</span><div data-component="SelectAutocomplete" class="select-autocomplete" :options="[{&quot;value&quot;:0,&quot;label&quot;:&quot;-- Не выбрана --&quot;,&quot;inputText&quot;:&quot;&quot;},{&quot;value&quot;:1642,&quot;label&quot;:&quot;544М&quot;},{&quot;value&quot;:2245,&quot;label&quot;:&quot;640&quot;},{&quot;value&quot;:2246,&quot;label&quot;:&quot;640М&quot;},{&quot;value&quot;:2247,&quot;label&quot;:&quot;641&quot;},{&quot;value&quot;:2252,&quot;label&quot;:&quot;642&quot;},{&quot;value&quot;:2255,&quot;label&quot;:&quot;643&quot;},{&quot;value&quot;:2256,&quot;label&quot;:&quot;643М&quot;},{&quot;value&quot;:2257,&quot;label&quot;:&quot;644&quot;},{&quot;value&quot;:2258,&quot;label&quot;:&quot;645&quot;},{&quot;value&quot;:2259,&quot;label&quot;:&quot;645М&quot;},{&quot;value&quot;:2260,&quot;label&quot;:&quot;646&quot;},{&quot;value&quot;:2261,&quot;label&quot;:&quot;646М&quot;},{&quot;value&quot;:2262,&quot;label&quot;:&quot;647&quot;},{&quot;value&quot;:2263,&quot;label&quot;:&quot;647М&quot;},{&quot;value&quot;:2264,&quot;label&quot;:&quot;648&quot;},{&quot;value&quot;:2265,&quot;label&quot;:&quot;648М&quot;},{&quot;value&quot;:1289,&quot;label&quot;:&quot;5044&quot;},{&quot;value&quot;:1290,&quot;label&quot;:&quot;5045&quot;},{&quot;value&quot;:1860,&quot;label&quot;:&quot;6044&quot;},{&quot;value&quot;:1861,&quot;label&quot;:&quot;6046&quot;},{&quot;value&quot;:2272,&quot;label&quot;:&quot;6046М&quot;},{&quot;value&quot;:2248,&quot;label&quot;:&quot;6413&quot;},{&quot;value&quot;:2249,&quot;label&quot;:&quot;6413М&quot;},{&quot;value&quot;:2250,&quot;label&quot;:&quot;6414&quot;},{&quot;value&quot;:2251,&quot;label&quot;:&quot;6415&quot;},{&quot;value&quot;:2253,&quot;label&quot;:&quot;6423&quot;},{&quot;value&quot;:2276,&quot;label&quot;:&quot;6424&quot;},{&quot;value&quot;:2254,&quot;label&quot;:&quot;6425&quot;},{&quot;value&quot;:2266,&quot;label&quot;:&quot;6840М&quot;},{&quot;value&quot;:2267,&quot;label&quot;:&quot;6845М&quot;},{&quot;value&quot;:884,&quot;label&quot;:&quot;340М&quot;},{&quot;value&quot;:886,&quot;label&quot;:&quot;343М&quot;},{&quot;value&quot;:887,&quot;label&quot;:&quot;345М&quot;},{&quot;value&quot;:888,&quot;label&quot;:&quot;346М&quot;},{&quot;value&quot;:889,&quot;label&quot;:&quot;348М&quot;},{&quot;value&quot;:862,&quot;label&quot;:&quot;440М&quot;},{&quot;value&quot;:864,&quot;label&quot;:&quot;443М&quot;},{&quot;value&quot;:865,&quot;label&quot;:&quot;445М&quot;},{&quot;value&quot;:866,&quot;label&quot;:&quot;446М&quot;},{&quot;value&quot;:867,&quot;label&quot;:&quot;448М&quot;},{&quot;value&quot;:1630,&quot;label&quot;:&quot;540&quot;},{&quot;value&quot;:1631,&quot;label&quot;:&quot;540М&quot;},{&quot;value&quot;:1632,&quot;label&quot;:&quot;541&quot;},{&quot;value&quot;:1637,&quot;label&quot;:&quot;542&quot;},{&quot;value&quot;:1639,&quot;label&quot;:&quot;543&quot;},{&quot;value&quot;:1640,&quot;label&quot;:&quot;543М&quot;},{&quot;value&quot;:1641,&quot;label&quot;:&quot;544&quot;},{&quot;value&quot;:1643,&quot;label&quot;:&quot;545&quot;},{&quot;value&quot;:1644,&quot;label&quot;:&quot;545М&quot;},{&quot;value&quot;:1645,&quot;label&quot;:&quot;546&quot;},{&quot;value&quot;:1647,&quot;label&quot;:&quot;546М&quot;},{&quot;value&quot;:1648,&quot;label&quot;:&quot;547&quot;},{&quot;value&quot;:1649,&quot;label&quot;:&quot;548&quot;},{&quot;value&quot;:1650,&quot;label&quot;:&quot;548М&quot;},{&quot;value&quot;:229,&quot;label&quot;:&quot;3040М&quot;},{&quot;value&quot;:885,&quot;label&quot;:&quot;3413М&quot;},{&quot;value&quot;:214,&quot;label&quot;:&quot;4046М&quot;},{&quot;value&quot;:863,&quot;label&quot;:&quot;4413М&quot;},{&quot;value&quot;:868,&quot;label&quot;:&quot;4840М&quot;},{&quot;value&quot;:869,&quot;label&quot;:&quot;4845М&quot;},{&quot;value&quot;:1652,&quot;label&quot;:&quot;5045М&quot;},{&quot;value&quot;:1655,&quot;label&quot;:&quot;5410М&quot;},{&quot;value&quot;:1633,&quot;label&quot;:&quot;5413&quot;},{&quot;value&quot;:1634,&quot;label&quot;:&quot;5413М&quot;},{&quot;value&quot;:1635,&quot;label&quot;:&quot;5414&quot;},{&quot;value&quot;:1636,&quot;label&quot;:&quot;5415&quot;},{&quot;value&quot;:1638,&quot;label&quot;:&quot;5423&quot;},{&quot;value&quot;:1646,&quot;label&quot;:&quot;5425&quot;},{&quot;value&quot;:1654,&quot;label&quot;:&quot;5845М&quot;},{&quot;value&quot;:871,&quot;label&quot;:&quot;440&quot;},{&quot;value&quot;:872,&quot;label&quot;:&quot;441&quot;},{&quot;value&quot;:877,&quot;label&quot;:&quot;442&quot;},{&quot;value&quot;:878,&quot;label&quot;:&quot;443&quot;},{&quot;value&quot;:879,&quot;label&quot;:&quot;444&quot;},{&quot;value&quot;:880,&quot;label&quot;:&quot;445&quot;},{&quot;value&quot;:881,&quot;label&quot;:&quot;446&quot;},{&quot;value&quot;:882,&quot;label&quot;:&quot;447&quot;},{&quot;value&quot;:883,&quot;label&quot;:&quot;448&quot;},{&quot;value&quot;:906,&quot;label&quot;:&quot;2845М&quot;},{&quot;value&quot;:890,&quot;label&quot;:&quot;3840М&quot;},{&quot;value&quot;:891,&quot;label&quot;:&quot;3845М&quot;},{&quot;value&quot;:892,&quot;label&quot;:&quot;3846М&quot;},{&quot;value&quot;:221,&quot;label&quot;:&quot;4044&quot;},{&quot;value&quot;:220,&quot;label&quot;:&quot;4046&quot;},{&quot;value&quot;:873,&quot;label&quot;:&quot;4413&quot;},{&quot;value&quot;:875,&quot;label&quot;:&quot;4414&quot;},{&quot;value&quot;:876,&quot;label&quot;:&quot;4415&quot;},{&quot;value&quot;:874,&quot;label&quot;:&quot;4423&quot;},{&quot;value&quot;:920,&quot;label&quot;:&quot;140&quot;},{&quot;value&quot;:926,&quot;label&quot;:&quot;143&quot;},{&quot;value&quot;:927,&quot;label&quot;:&quot;144&quot;},{&quot;value&quot;:928,&quot;label&quot;:&quot;145&quot;},{&quot;value&quot;:929,&quot;label&quot;:&quot;146&quot;},{&quot;value&quot;:930,&quot;label&quot;:&quot;148&quot;},{&quot;value&quot;:908,&quot;label&quot;:&quot;240&quot;},{&quot;value&quot;:914,&quot;label&quot;:&quot;243&quot;},{&quot;value&quot;:915,&quot;label&quot;:&quot;244&quot;},{&quot;value&quot;:916,&quot;label&quot;:&quot;245&quot;},{&quot;value&quot;:917,&quot;label&quot;:&quot;246&quot;},{&quot;value&quot;:918,&quot;label&quot;:&quot;247&quot;},{&quot;value&quot;:894,&quot;label&quot;:&quot;340&quot;},{&quot;value&quot;:895,&quot;label&quot;:&quot;341&quot;},{&quot;value&quot;:899,&quot;label&quot;:&quot;342&quot;},{&quot;value&quot;:900,&quot;label&quot;:&quot;343&quot;},{&quot;value&quot;:901,&quot;label&quot;:&quot;344&quot;},{&quot;value&quot;:902,&quot;label&quot;:&quot;345&quot;},{&quot;value&quot;:903,&quot;label&quot;:&quot;346&quot;},{&quot;value&quot;:904,&quot;label&quot;:&quot;347&quot;},{&quot;value&quot;:905,&quot;label&quot;:&quot;348&quot;},{&quot;value&quot;:922,&quot;label&quot;:&quot;1411&quot;},{&quot;value&quot;:923,&quot;label&quot;:&quot;1413&quot;},{&quot;value&quot;:924,&quot;label&quot;:&quot;1415&quot;},{&quot;value&quot;:910,&quot;label&quot;:&quot;2413&quot;},{&quot;value&quot;:912,&quot;label&quot;:&quot;2415&quot;},{&quot;value&quot;:234,&quot;label&quot;:&quot;3040&quot;},{&quot;value&quot;:235,&quot;label&quot;:&quot;3044&quot;},{&quot;value&quot;:896,&quot;label&quot;:&quot;3413&quot;},{&quot;value&quot;:897,&quot;label&quot;:&quot;3414&quot;},{&quot;value&quot;:898,&quot;label&quot;:&quot;3415&quot;},{&quot;value&quot;:931,&quot;label&quot;:&quot;041&quot;},{&quot;value&quot;:932,&quot;label&quot;:&quot;042&quot;},{&quot;value&quot;:265,&quot;label&quot;:&quot;0044&quot;},{&quot;value&quot;:266,&quot;label&quot;:&quot;0048&quot;},{&quot;value&quot;:909,&quot;label&quot;:&quot;241&quot;},{&quot;value&quot;:913,&quot;label&quot;:&quot;242&quot;},{&quot;value&quot;:253,&quot;label&quot;:&quot;1040&quot;},{&quot;value&quot;:244,&quot;label&quot;:&quot;2044&quot;},{&quot;value&quot;:245,&quot;label&quot;:&quot;2048&quot;},{&quot;value&quot;:911,&quot;label&quot;:&quot;2414&quot;},{&quot;value&quot;:1063,&quot;label&quot;:&quot;ГШП1&quot;},{&quot;value&quot;:1064,&quot;label&quot;:&quot;ГШП2&quot;},{&quot;value&quot;:1065,&quot;label&quot;:&quot;ГШП3&quot;},{&quot;value&quot;:1066,&quot;label&quot;:&quot;ГШП4&quot;},{&quot;value&quot;:1067,&quot;label&quot;:&quot;ГШП5&quot;},{&quot;value&quot;:1068,&quot;label&quot;:&quot;ГШП6&quot;},{&quot;value&quot;:1069,&quot;label&quot;:&quot;ГШП7&quot;},{&quot;value&quot;:1659,&quot;label&quot;:&quot;ГШП8&quot;},{&quot;value&quot;:921,&quot;label&quot;:&quot;141&quot;},{&quot;value&quot;:925,&quot;label&quot;:&quot;142&quot;}]" id="field-group" placeholder="-- Не выбрана --"  name="group" :value="1633" ><input type="text" autocomplete="off" spellcheck="false" value="5413" id="field-group" placeholder="-- Не выбрана --" ><i class="mdi"></i></div></label></div>
+							</div>
+							<div class="column" style="width: 220px;">
+								<div class="field " ><label><span class="label">Неделя</span><div class="select-wrap"><select name="date" onchange="updateDate()" ><option value=""  >-- Не выбрана --</option><option value="2026-08-31"  >31.08.2026, числ.</option><option value="2026-09-07"  >07.09.2026, знам.</option><option value="2026-09-14"  >14.09.2026, числ.</option><option value="2026-09-21"  >21.09.2026, знам.</option><option value="2026-09-28"  >28.09.2026, числ.</option><option value="2026-10-05"  >05.10.2026, знам.</option><option value="2026-10-12"  >12.10.2026, числ.</option><option value="2026-10-19" selected >19.10.2026, знам. (текущая)</option><option value="2026-10-26"  >26.10.2026, числ.</option><option value="2026-11-02"  >02.11.2026, знам.</option><option value="2026-11-09"  >09.11.2026, числ.</option><option value="2026-11-16"  >16.11.2026, знам.</option><option value="2026-11-23"  >23.11.2026, числ.</option><option value="2026-11-30"  >30.11.2026, знам.</option><option value="2026-12-07"  >07.12.2026, числ.</option><option value="2026-12-14"  >14.12.2026, знам.</option><option value="2026-12-21"  >21.12.2026</option></select><div class="custom-select"></div></div></label></div>
+							</div>
+												<div style="color: #576f7e; opacity: 0.8; font-size: 0.8rem; line-height: 1.4rem; margin-top: 18px; padding-left: 25px;" class="column">
+							<div>C - Центральный корпус</div>
+							<div>L - Лабораторный корпус</div>
+						</div>
+						<div style="color: #576f7e; opacity: 0.8; font-size: 0.8rem; line-height: 1.4rem; margin-top: 18px;" class="column">
+							<div>B - Бизнес-инкубатор</div>
+							<div>F - Первый корпус</div>
+						</div>
+											</div>
+				</form>
+				<div style="clear: left"></div>
+														<table class="table table-links-no-underline table-vertical-borders">
+					<tr class="table-row-height-large">
+						<th>Время</th>
+													<th style="width: 200px" >
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">19 октября</span>
+								Понедельник
+							</th>
+													<th style="width: 200px" >
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">20 октября</span>
+								Вторник
+							</th>
+													<th style="width: 200px" >
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">21 октября</span>
+								Среда
+							</th>
+													<th style="width: 200px" >
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">22 октября</span>
+								Четверг
+							</th>
+													<th style="width: 200px" class="schedule-column-today">
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">23 октября</span>
+								Пятница
+							</th>
+													<th style="width: 200px" >
+								<span style="font-size: 0.75rem; margin-bottom: -5px; display: block;">24 октября</span>
+								Суббота
+							</th>
+											</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">08:10</div>
+								<div style="min-height: 35px;">09:45</div>
+							</td>
+																																<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Экономика промышленности и управление предприятием,<br><a
+														href="/schedule-frame/lecturer?lecturer=70&amp;date=2026-10-19"
+													>ст. преп. Кутузова И.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=147&amp;date=2026-10-19"
+														>501&nbsp;L</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Элективные дисциплины по физической культуре и спорту, <a
+															href="/schedule-frame/classroom?classroom=430&amp;date=2026-10-19"
+														>Спортзал&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Линейная алгебра и функции нескольких переменных,<br><a
+														href="/schedule-frame/lecturer?lecturer=1384&amp;date=2026-10-19"
+													>доц. Ципоркова К.А.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=288&amp;date=2026-10-19"
+														>337&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-2" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-microscope table-icon"></i>Лаб.
+												</span>Физика, п.г.&nbsp;1,<br><a
+														href="/schedule-frame/lecturer?lecturer=81&amp;date=2026-10-19"
+													>доц. Иванов В.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=139&amp;date=2026-10-19"
+														>368&nbsp;C</a>
+																																				</div>
+																																											<div class="schedule-cell-subgroup-item"> 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-microscope table-icon"></i>Лаб.
+												</span>Физика, п.г.&nbsp;2,<br><a
+														href="/schedule-frame/lecturer?lecturer=53&amp;date=2026-10-19"
+													>доц. Маношкин А.Б.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=139&amp;date=2026-10-19"
+														>368&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td></td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">09:55</div>
+								<div style="min-height: 35px;">11:30</div>
+							</td>
+																																<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Физика,<br><a
+														href="/schedule-frame/lecturer?lecturer=56&amp;date=2026-10-19"
+													>доц. Веснов И.Г.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=165&amp;date=2026-10-19"
+														>267&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Теория вероятностей для систем ИИ,<br><a
+														href="/schedule-frame/lecturer?lecturer=1706&amp;date=2026-10-19"
+													>доц. Соколова Ю.С.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=149&amp;date=2026-10-19"
+														>333&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Линейная алгебра и функции нескольких переменных,<br><a
+														href="/schedule-frame/lecturer?lecturer=1384&amp;date=2026-10-19"
+													>доц. Ципоркова К.А.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=136&amp;date=2026-10-19"
+														>444&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-2" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-microscope table-icon"></i>Лаб.
+												</span>Основы систем искусственного интеллекта, п.г.&nbsp;1,<br><a
+														href="/schedule-frame/lecturer?lecturer=1550&amp;date=2026-10-19"
+													>доц. Дмитриева Т.А.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=264&amp;date=2026-10-19"
+														>206-4&nbsp;C</a>
+																																				</div>
+																																											<div class="schedule-cell-subgroup-item"> 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-microscope table-icon"></i>Лаб.
+												</span>Основы систем искусственного интеллекта, п.г.&nbsp;2,<br><a
+														href="/schedule-frame/lecturer?lecturer=1729&amp;date=2026-10-19"
+													>доц. Шадрин М.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=264&amp;date=2026-10-19"
+														>206-4&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Алгоритмы и структуры данных,<br><a
+														href="/schedule-frame/lecturer?lecturer=1706&amp;date=2026-10-19"
+													>доц. Соколова Ю.С.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=170&amp;date=2026-10-19"
+														>258&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">11:40</div>
+								<div style="min-height: 35px;">13:15</div>
+							</td>
+																																<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Экономика промышленности и управление предприятием,<br><a
+														href="/schedule-frame/lecturer?lecturer=70&amp;date=2026-10-19"
+													>ст. преп. Кутузова И.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=165&amp;date=2026-10-19"
+														>267&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Основы классической и неклассической логики в системах ИИ,<br><a
+														href="/schedule-frame/lecturer?lecturer=1320&amp;date=2026-10-19"
+													>доц. Проказникова Е.Н.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=170&amp;date=2026-10-19"
+														>258&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Теория вероятностей для систем ИИ,<br><a
+														href="/schedule-frame/lecturer?lecturer=1706&amp;date=2026-10-19"
+													>доц. Соколова Ю.С.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=227&amp;date=2026-10-19"
+														>106а&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-1" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-book-open-variant-outline table-icon"></i>Лек.
+												</span>Основы систем искусственного интеллекта,<br><a
+														href="/schedule-frame/lecturer?lecturer=1550&amp;date=2026-10-19"
+													>доц. Дмитриева Т.А.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=170&amp;date=2026-10-19"
+														>258&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Элективные дисциплины по физической культуре и спорту, <a
+															href="/schedule-frame/classroom?classroom=430&amp;date=2026-10-19"
+														>Спортзал&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">13:35</div>
+								<div style="min-height: 35px;">15:10</div>
+							</td>
+																																<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Иностранный язык, Иностранный язык, п.г.&nbsp;1,<br><a
+														href="/schedule-frame/lecturer?lecturer=1291&amp;date=2026-10-19"
+													>доц. ИнЯз Галицына И.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=151&amp;date=2026-10-19"
+														>310&nbsp;C</a>
+																																				</div>
+																																											<div class="schedule-cell-subgroup-item"> 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Иностранный язык, Иностранный язык, п.г.&nbsp;2,<br><a
+														href="/schedule-frame/lecturer?lecturer=59&amp;date=2026-10-19"
+													>ст. преп. Конькова Д.П.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=171&amp;date=2026-10-19"
+														>304&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>НИР практика/Научно-исследовательская работа,<br><a
+														href="/schedule-frame/lecturer?lecturer=1530&amp;date=2026-10-19"
+													>проф. Овечкин Г.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=144&amp;date=2026-10-19"
+														>203&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>НИР практика/Научно-исследовательская работа,<br><a
+														href="/schedule-frame/lecturer?lecturer=1530&amp;date=2026-10-19"
+													>проф. Овечкин Г.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=134&amp;date=2026-10-19"
+														>346&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>Физика (факультатив)																							</div>
+																			</td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>НИР практика/Научно-исследовательская работа,<br><a
+														href="/schedule-frame/lecturer?lecturer=1530&amp;date=2026-10-19"
+													>проф. Овечкин Г.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=221&amp;date=2026-10-19"
+														>206-1&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">15:20</div>
+								<div style="min-height: 35px;">16:55</div>
+							</td>
+																																<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td class="schedule-cell schedule-lesson-type-3" style="vertical-align: top">
+																																											<div > 												<span class="schedule-lesson-type-badge">
+													<i class="mdi mdi-function-variant table-icon"></i>Упр.
+												</span>НИР практика/Научно-исследовательская работа,<br><a
+														href="/schedule-frame/lecturer?lecturer=1530&amp;date=2026-10-19"
+													>проф. Овечкин Г.В.</a>, ауд. <a
+															href="/schedule-frame/classroom?classroom=221&amp;date=2026-10-19"
+														>206-1&nbsp;C</a>
+																																				</div>
+																			</td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">17:05</div>
+								<div style="min-height: 35px;">18:40</div>
+							</td>
+																																<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">18:50</div>
+								<div style="min-height: 35px;">20:15</div>
+							</td>
+																																<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																					</tr>
+											<tr>
+							<td style="vertical-align: top;">
+								<div style="font-weight: bold;font-size: 1rem;margin-top: 3px;">20:25</div>
+								<div style="min-height: 35px;">21:50</div>
+							</td>
+																																<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																																								<td></td>
+																					</tr>
+									</table>
+								</section>
+			</div>
+				</main>
+			</div>
+					</div>
+		
+								<script src="/js/scripts.js"></script>
+																			<script src="/assets-pozitron/index-d1c8e5f5.js"></script>
+				<script src="/js/pozitron.ext.js"></script>
+										<script>
+		const form = document.getElementById('schedule-form');
+		const fieldGroup = Pozitron.getComponent(document.getElementById('field-group').parentNode);
+		subscribe(fieldGroup.value, function(value) {
+			if (value) {
+				form.submit();
+			}
+		}, {defer: true});
+
+		function updateDate() {
+			if (form.date.value) {
+				form.submit();
+			}
+		}
+	</script>
+						</body>
+</html>

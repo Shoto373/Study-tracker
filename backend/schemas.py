@@ -59,3 +59,21 @@ class WeeklyStat(BaseModel):
     color: str
     target_hours_per_week: int
     minutes: int
+
+
+class ScheduleGroup(BaseModel):
+    faculty: int
+    group: int
+    group_name: str
+
+
+class ScheduleImport(ScheduleGroup):
+    group_name: str = Field(min_length=1, max_length=50)
+    # Set once the user agreed to replace subjects although there is recorded activity.
+    confirm: bool = False
+
+
+class ScheduleImportResult(BaseModel):
+    created: list[SubjectOut]
+    existing: list[str]
+    replaced: bool = False

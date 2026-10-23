@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { fetchDeadlines, createDeadline, updateDeadline, deleteDeadline } from '../api/client'
 import type { Deadline, Subject } from '../types'
+import Dropdown from './Dropdown'
+import DatePicker from './DatePicker'
 
 interface Props {
   subjects: Subject[]
@@ -108,24 +110,39 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
   )
   const todayStr = new Date().toLocaleDateString('sv-SE')
 
+  // Дней до дедлайна: красный при <= 1 дне и просрочке, жёлтый при <= 3 днях.
+  function urgency(d: Deadline) {
+    if (d.is_done) return null
+    const days = Math.round(
+      (new Date(`${d.due_date}T00:00:00`).getTime() - new Date(`${todayStr}T00:00:00`).getTime()) / 86400000,
+    )
+    if (days < 0) return { tone: 'red', label: 'просрочен' }
+    if (days === 0) return { tone: 'red', label: 'сегодня' }
+    if (days === 1) return { tone: 'red', label: 'завтра' }
+    if (days <= 3) return { tone: 'yellow', label: `через ${days} дня` }
+    return null
+  }
+
   return (
     <section>
       <form onSubmit={handleSubmit} className="mb-5 flex flex-wrap items-center gap-2">
-        <select value={selected ?? ''} onChange={(e) => setSubjectId(Number(e.target.value))} className="field">
-          {subjects.map((s) => (
-            <option key={s.id} value={s.id}>{s.name}</option>
-          ))}
-        </select>
+        <Dropdown
+          options={subjects}
+          value={selected ?? 0}
+          onChange={setSubjectId}
+          placeholder="Предмет"
+          className="w-full"
+        />
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Что сдать"
+          placeholder="Что сделать"
           required
           className="field min-w-32 flex-1"
         />
-        <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} required className="field" />
-        <button type="submit" className="btn">Добавить</button>
+        <DatePicker value={dueDate} onChange={setDueDate} />
+        <button type="submit" disabled={!title.trim() || !dueDate} className="btn">Добавить</button>
       </form>
       {error && <p className="mb-2 text-sm text-red-400">Ошибка: {error}</p>}
       {sorted.length === 0 ? (
@@ -134,19 +151,17 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
         <ul className="space-y-2">
           {sorted.map((d) => {
             const subject = subjects.find((x) => x.id === d.subject_id)
-            const overdue = !d.is_done && d.due_date < todayStr
+            const urgent = urgency(d)
             if (editingId === d.id) {
               return (
                 <li key={d.id} className="row flex-wrap" onKeyDown={(e) => handleKeyDown(e, d)}>
-                  <select
+                  <Dropdown
+                    options={subjects}
                     value={editSubject}
-                    onChange={(e) => setEditSubject(Number(e.target.value))}
-                    className="field"
-                  >
-                    {subjects.map((x) => (
-                      <option key={x.id} value={x.id}>{x.name}</option>
-                    ))}
-                  </select>
+                    onChange={setEditSubject}
+                    placeholder="Предмет"
+                    className="w-full"
+                  />
                   <input
                     type="text"
                     value={editTitle}
@@ -156,7 +171,7 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
                     autoFocus
                     className="field min-w-32 flex-1"
                   />
-                  <input type="date" value={editDue} onChange={(e) => setEditDue(e.target.value)} required className="field" />
+                  <DatePicker value={editDue} onChange={setEditDue} />
                   <button onClick={() => saveEdit(d)} className="btn">Сохранить</button>
                   <button onClick={cancelEdit} className="btn-icon" aria-label="Отмена">✕</button>
                   {editError && <p className="w-full text-sm text-red-400">Ошибка: {editError}</p>}
@@ -175,8 +190,25 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
                 <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: subject?.color }} />
                 <div className="min-w-0">
                   <div className={d.is_done ? 'text-slate-500 line-through' : 'font-medium'}>{d.title}</div>
-                  <div className={`text-sm ${overdue ? 'text-red-400' : 'text-slate-400'}`}>
-                    {subject?.name ?? '—'} · до {d.due_date}{overdue && ' · просрочен'}
+                  <div
+                    className={`text-sm ${
+                      urgent?.tone === 'red'
+                        ? 'text-red-400'
+                        : urgent?.tone === 'yellow'
+                          ? 'text-yellow-400'
+                          : 'text-slate-400'
+                    }`}
+                  >
+                    {subject?.name ?? '—'} · до {d.due_date}
+                    {urgent && (
+                      <span
+                        className={`ml-2 rounded-full px-2 py-0.5 text-xs ${
+                          urgent.tone === 'red' ? 'bg-red-500/15' : 'bg-yellow-500/15'
+                        }`}
+                      >
+                        {urgent.label}
+                      </span>
+                    )}
                   </div>
                 </div>
                 <button

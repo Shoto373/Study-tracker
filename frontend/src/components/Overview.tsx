@@ -7,12 +7,13 @@ interface Props {
   refreshKey: number
 }
 
-function weekStart(): string {
+// Текущая неделя: с понедельника по воскресенье (включительно), в местном времени.
+function weekRange(): { start: string; end: string } {
   const d = new Date()
-  const offset = (d.getDay() + 6) % 7
-  d.setDate(d.getDate() - offset)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7))
+  const start = d.toLocaleDateString('sv-SE')
+  d.setDate(d.getDate() + 6)
+  return { start, end: d.toLocaleDateString('sv-SE') }
 }
 
 function Overview({ subjects, refreshKey }: Props) {
@@ -22,8 +23,8 @@ function Overview({ subjects, refreshKey }: Props) {
     fetchSessions().then(setSessions).catch(console.error)
   }, [refreshKey])
 
-  const start = weekStart()
-  const thisWeek = sessions.filter((s) => s.date >= start)
+  const { start, end } = weekRange()
+  const thisWeek = sessions.filter((s) => s.date >= start && s.date <= end)
   const totalMinutes = thisWeek.reduce((sum, s) => sum + s.duration_minutes, 0)
   const totalTarget = subjects.reduce((sum, s) => sum + s.target_hours_per_week, 0)
 
