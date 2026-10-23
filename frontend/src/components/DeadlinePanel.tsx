@@ -14,6 +14,12 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
   const [title, setTitle] = useState('')
   const [dueDate, setDueDate] = useState('')
 
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editSubject, setEditSubject] = useState(0)
+  const [editTitle, setEditTitle] = useState('')
+  const [editDue, setEditDue] = useState('')
+  const [editError, setEditError] = useState<string | null>(null)
+
   const load = () =>
     fetchDeadlines()
       .then((data) => {
@@ -55,6 +61,44 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
       is_done: !d.is_done,
     }))
 
+  function startEdit(d: Deadline) {
+    setEditingId(d.id)
+    setEditSubject(d.subject_id)
+    setEditTitle(d.title)
+    setEditDue(d.due_date)
+    setEditError(null)
+  }
+
+  function cancelEdit() {
+    setEditingId(null)
+    setEditError(null)
+  }
+
+  async function saveEdit(d: Deadline) {
+    try {
+      await updateDeadline(d.id, {
+        subject_id: editSubject,
+        title: editTitle,
+        due_date: editDue,
+        is_done: d.is_done,
+      })
+      setEditingId(null)
+      setEditError(null)
+      await load()
+    } catch (err) {
+      setEditError((err as Error).message)
+    }
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent, d: Deadline) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      saveEdit(d)
+    } else if (e.key === 'Escape') {
+      cancelEdit()
+    }
+  }
+
   if (subjects.length === 0) {
     return <p className="empty">Сначала добавьте предмет во вкладке «Предметы»</p>
   }
@@ -62,7 +106,7 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
   const sorted = [...deadlines].sort(
     (a, b) => Number(a.is_done) - Number(b.is_done) || a.due_date.localeCompare(b.due_date),
   )
-  const todayStr = new Date().toISOString().slice(0, 10)
+  const todayStr = new Date().toLocaleDateString('sv-SE')
 
   return (
     <section>
@@ -91,6 +135,34 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
           {sorted.map((d) => {
             const subject = subjects.find((x) => x.id === d.subject_id)
             const overdue = !d.is_done && d.due_date < todayStr
+            if (editingId === d.id) {
+              return (
+                <li key={d.id} className="row flex-wrap" onKeyDown={(e) => handleKeyDown(e, d)}>
+                  <select
+                    value={editSubject}
+                    onChange={(e) => setEditSubject(Number(e.target.value))}
+                    className="field"
+                  >
+                    {subjects.map((x) => (
+                      <option key={x.id} value={x.id}>{x.name}</option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
+                    value={editTitle}
+                    onChange={(e) => setEditTitle(e.target.value)}
+                    placeholder="Что сдать"
+                    required
+                    autoFocus
+                    className="field min-w-32 flex-1"
+                  />
+                  <input type="date" value={editDue} onChange={(e) => setEditDue(e.target.value)} required className="field" />
+                  <button onClick={() => saveEdit(d)} className="btn">Сохранить</button>
+                  <button onClick={cancelEdit} className="btn-icon" aria-label="Отмена">✕</button>
+                  {editError && <p className="w-full text-sm text-red-400">Ошибка: {editError}</p>}
+                </li>
+              )
+            }
             return (
               <li key={d.id} className="row">
                 <input
@@ -108,8 +180,15 @@ function DeadlinePanel({ subjects, refreshKey }: Props) {
                   </div>
                 </div>
                 <button
-                  onClick={() => run(() => deleteDeadline(d.id))}
+                  onClick={() => startEdit(d)}
                   className="btn-icon ml-auto"
+                  aria-label="Редактировать дедлайн"
+                >
+                  ✎
+                </button>
+                <button
+                  onClick={() => run(() => deleteDeadline(d.id))}
+                  className="btn-icon"
                   aria-label="Удалить дедлайн"
                 >
                   ✕

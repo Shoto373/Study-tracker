@@ -20,12 +20,16 @@ export type DeadlineInput = Omit<Deadline, 'id'>
 export const fetchSubjects = () => request<Subject[]>('/subjects/')
 export const createSubject = (data: SubjectInput) =>
   request<Subject>('/subjects/', { method: 'POST', body: JSON.stringify(data) })
+export const updateSubject = (id: number, data: SubjectInput) =>
+  request<Subject>(`/subjects/${id}`, { method: 'PUT', body: JSON.stringify(data) })
 export const deleteSubject = (id: number) =>
   request<void>(`/subjects/${id}`, { method: 'DELETE' })
 
 export const fetchSessions = () => request<Session[]>('/sessions/')
 export const createSession = (data: SessionInput) =>
   request<Session>('/sessions/', { method: 'POST', body: JSON.stringify(data) })
+export const updateSession = (id: number, data: SessionInput) =>
+  request<Session>(`/sessions/${id}`, { method: 'PUT', body: JSON.stringify(data) })
 export const deleteSession = (id: number) =>
   request<void>(`/sessions/${id}`, { method: 'DELETE' })
 

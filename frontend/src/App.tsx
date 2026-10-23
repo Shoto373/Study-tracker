@@ -3,6 +3,7 @@ import SubjectList from './components/SubjectList'
 import SubjectForm from './components/SubjectForm'
 import SessionPanel from './components/SessionPanel'
 import DeadlinePanel from './components/DeadlinePanel'
+import Timer from './components/Timer'
 import Overview from './components/Overview'
 import { fetchSubjects } from './api/client'
 import type { Subject } from './types'
@@ -11,6 +12,7 @@ const TABS = [
   { id: 'subjects', label: 'Предметы' },
   { id: 'sessions', label: 'Сессии' },
   { id: 'deadlines', label: 'Дедлайны' },
+  { id: 'timer', label: 'Таймер' },
 ] as const
 
 type TabId = (typeof TABS)[number]['id']
@@ -61,6 +63,7 @@ function App() {
           <SessionPanel subjects={subjects} refreshKey={refreshKey} onChanged={refresh} />
         )}
         {tab === 'deadlines' && <DeadlinePanel subjects={subjects} refreshKey={refreshKey} />}
+        {tab === 'timer' && <Timer subjects={subjects} onSaved={refresh} />}
       </main>
     </div>
   )

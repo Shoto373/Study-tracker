@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { fetchSessions, createSession, deleteSession } from '../api/client'
+import { fetchSessions, createSession, updateSession, deleteSession } from '../api/client'
 import type { Session, Subject } from '../types'
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
   onChanged: () => void
 }
 
-const today = () => new Date().toISOString().slice(0, 10)
+const today = () => new Date().toLocaleDateString('sv-SE')
 
 function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
   const [sessions, setSessions] = useState<Session[]>([])
@@ -17,6 +17,13 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
   const [date, setDate] = useState(today())
   const [minutes, setMinutes] = useState(60)
   const [note, setNote] = useState('')
+
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [editSubject, setEditSubject] = useState(0)
+  const [editDate, setEditDate] = useState('')
+  const [editMinutes, setEditMinutes] = useState(60)
+  const [editNote, setEditNote] = useState('')
+  const [editError, setEditError] = useState<string | null>(null)
 
   useEffect(() => {
     fetchSessions()
@@ -44,6 +51,46 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
       onChanged()
     } catch (err) {
       setError((err as Error).message)
+    }
+  }
+
+  function startEdit(s: Session) {
+    setEditingId(s.id)
+    setEditSubject(s.subject_id)
+    setEditDate(s.date)
+    setEditMinutes(s.duration_minutes)
+    setEditNote(s.note ?? '')
+    setEditError(null)
+  }
+
+  function cancelEdit() {
+    setEditingId(null)
+    setEditError(null)
+  }
+
+  async function saveEdit(s: Session) {
+    try {
+      await updateSession(s.id, {
+        subject_id: editSubject,
+        date: editDate,
+        duration_minutes: editMinutes,
+        session_type: s.session_type,
+        note: editNote || null,
+      })
+      setEditingId(null)
+      setEditError(null)
+      onChanged()
+    } catch (err) {
+      setEditError((err as Error).message)
+    }
+  }
+
+  function handleKeyDown(e: React.KeyboardEvent, s: Session) {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      saveEdit(s)
+    } else if (e.key === 'Escape') {
+      cancelEdit()
     }
   }
 
@@ -99,6 +146,41 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
         <ul className="space-y-2">
           {sorted.map((s) => {
             const subject = subjects.find((x) => x.id === s.subject_id)
+            if (editingId === s.id) {
+              return (
+                <li key={s.id} className="row flex-wrap" onKeyDown={(e) => handleKeyDown(e, s)}>
+                  <select
+                    value={editSubject}
+                    onChange={(e) => setEditSubject(Number(e.target.value))}
+                    className="field"
+                  >
+                    {subjects.map((x) => (
+                      <option key={x.id} value={x.id}>{x.name}</option>
+                    ))}
+                  </select>
+                  <input type="date" value={editDate} onChange={(e) => setEditDate(e.target.value)} required className="field" />
+                  <input
+                    type="number"
+                    min="1"
+                    value={editMinutes}
+                    onChange={(e) => setEditMinutes(Number(e.target.value))}
+                    className="field w-24"
+                    title="Минут"
+                  />
+                  <input
+                    type="text"
+                    value={editNote}
+                    onChange={(e) => setEditNote(e.target.value)}
+                    placeholder="Заметка"
+                    autoFocus
+                    className="field min-w-32 flex-1"
+                  />
+                  <button onClick={() => saveEdit(s)} className="btn">Сохранить</button>
+                  <button onClick={cancelEdit} className="btn-icon" aria-label="Отмена">✕</button>
+                  {editError && <p className="w-full text-sm text-red-400">Ошибка: {editError}</p>}
+                </li>
+              )
+            }
             return (
               <li key={s.id} className="row">
                 <span className="h-3 w-3 shrink-0 rounded-full" style={{ background: subject?.color }} />
@@ -109,8 +191,15 @@ function SessionPanel({ subjects, refreshKey, onChanged }: Props) {
                   </div>
                 </div>
                 <button
-                  onClick={() => handleDelete(s.id)}
+                  onClick={() => startEdit(s)}
                   className="btn-icon ml-auto"
+                  aria-label="Редактировать сессию"
+                >
+                  ✎
+                </button>
+                <button
+                  onClick={() => handleDelete(s.id)}
+                  className="btn-icon"
                   aria-label="Удалить сессию"
                 >
                   ✕

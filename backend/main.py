@@ -1,3 +1,5 @@
+from datetime import date, timedelta
+
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session as DbSession
@@ -43,8 +45,20 @@ def create_session(session: schemas.SessionCreate, db: DbSession = Depends(datab
 
 
 @app.get("/sessions/", response_model=list[schemas.SessionOut])
-def list_sessions(db: DbSession = Depends(database.get_db)):
-    return db.query(models.Session).all()
+def list_sessions(
+    subject_id: int | None = None,
+    date_from: date | None = None,
+    date_to: date | None = None,
+    db: DbSession = Depends(database.get_db),
+):
+    q = db.query(models.Session)
+    if subject_id is not None:
+        q = q.filter(models.Session.subject_id == subject_id)
+    if date_from is not None:
+        q = q.filter(models.Session.date >= date_from)
+    if date_to is not None:
+        q = q.filter(models.Session.date <= date_to)
+    return q.order_by(models.Session.date.desc(), models.Session.id.desc()).all()
 
 
 @app.post("/deadlines/", response_model=schemas.DeadlineOut)
@@ -58,8 +72,47 @@ def create_deadline(deadline: schemas.DeadlineCreate, db: DbSession = Depends(da
 
 
 @app.get("/deadlines/", response_model=list[schemas.DeadlineOut])
-def list_deadlines(db: DbSession = Depends(database.get_db)):
-    return db.query(models.Deadline).all()
+def list_deadlines(
+    subject_id: int | None = None,
+    is_done: bool | None = None,
+    due_before: date | None = None,
+    db: DbSession = Depends(database.get_db),
+):
+    q = db.query(models.Deadline)
+    if subject_id is not None:
+        q = q.filter(models.Deadline.subject_id == subject_id)
+    if is_done is not None:
+        q = q.filter(models.Deadline.is_done == is_done)
+    if due_before is not None:
+        q = q.filter(models.Deadline.due_date < due_before)
+    return q.order_by(models.Deadline.due_date.asc(), models.Deadline.id.asc()).all()
+
+
+@app.get("/stats/weekly", response_model=list[schemas.WeeklyStat])
+def weekly_stats(week_start: date | None = None, db: DbSession = Depends(database.get_db)):
+    if week_start is None:
+        today = date.today()
+        week_start = today - timedelta(days=today.weekday())
+    week_end = week_start + timedelta(days=6)
+    totals: dict[int, int] = {}
+    sessions = (
+        db.query(models.Session)
+        .filter(models.Session.date >= week_start, models.Session.date <= week_end)
+        .all()
+    )
+    for sess in sessions:
+        totals[sess.subject_id] = totals.get(sess.subject_id, 0) + sess.duration_minutes
+    subjects = db.query(models.Subject).order_by(models.Subject.id).all()
+    return [
+        schemas.WeeklyStat(
+            subject_id=sub.id,
+            name=sub.name,
+            color=sub.color,
+            target_hours_per_week=sub.target_hours_per_week,
+            minutes=totals.get(sub.id, 0),
+        )
+        for sub in subjects
+    ]
 
 
 def _get_or_404(db: DbSession, model, item_id: int):

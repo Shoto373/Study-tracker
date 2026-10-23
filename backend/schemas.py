@@ -51,3 +51,11 @@ class DeadlineOut(DeadlineBase):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class WeeklyStat(BaseModel):
+    subject_id: int
+    name: str
+    color: str
+    target_hours_per_week: int
+    minutes: int
